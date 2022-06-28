@@ -1,0 +1,43 @@
+<svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+<mask id="path-1-inside-1_2_18" fill="white">
+<path d="M0 0H60V60H0V0Z"/>
+</mask>
+<path d="M0 0H60V60H0V0Z" fill="#88F876"/>
+<path d="M0 0V-1H-1V0H0ZM60 0H61V-1H60V0ZM60 60V61H61V60H60ZM0 60H-1V61H0V60ZM0 1H60V-1H0V1ZM59 0V60H61V0H59ZM60 59H0V61H60V59ZM1 60V0H-1V60H1Z" fill="black" mask="url(#path-1-inside-1_2_18)"/>
+<mask id="path-3-inside-2_2_18" fill="white">
+<path d="M0 60H60V120H0V60Z"/>
+</mask>
+<path d="M0 60H60V120H0V60Z" fill="#E3FC4E"/>
+<path d="M60 120V121H61V120H60ZM0 120H-1V121H0V120ZM59 60V120H61V60H59ZM60 119H0V121H60V119ZM1 120V60H-1V120H1Z" fill="black" mask="url(#path-3-inside-2_2_18)"/>
+<mask id="path-5-inside-3_2_18" fill="white">
+<path d="M60 0H120V60H60V0Z"/>
+</mask>
+<path d="M60 0H120V60H60V0Z" fill="#2E9BFF"/>
+<path d="M60 1H120V-1H60V1ZM120 59H60V61H120V59Z" fill="black" mask="url(#path-5-inside-3_2_18)"/>
+<mask id="path-7-inside-4_2_18" fill="white">
+<path d="M60 60H120V120H60V60Z"/>
+</mask>
+<path d="M60 60H120V120H60V60Z" fill="#7563E1"/>
+<path d="M120 119H60V121H120V119Z" fill="black" mask="url(#path-7-inside-4_2_18)"/>
+<mask id="path-9-inside-5_2_18" fill="white">
+<path d="M60 120H120V180H60V120Z"/>
+</mask>
+<path d="M60 120H120V180H60V120Z" fill="#6F5555"/>
+<path d="M120 179H60V181H120V179Z" fill="black" mask="url(#path-9-inside-5_2_18)"/>
+<rect x="120.5" y="0.5" width="59" height="59" fill="#FF21CE" stroke="black"/>
+<mask id="path-12-inside-6_2_18" fill="white">
+<path d="M120 60H180V120H120V60Z"/>
+</mask>
+<path d="M120 60H180V120H120V60Z" fill="#F54B4B"/>
+<path d="M180 120V121H181V120H180ZM120 120H119V121H120V120ZM179 60V120H181V60H179ZM180 119H120V121H180V119ZM121 120V60H119V120H121Z" fill="black" mask="url(#path-12-inside-6_2_18)"/>
+<mask id="path-14-inside-7_2_18" fill="white">
+<path d="M0 120H60V180H0V120Z"/>
+</mask>
+<path d="M0 120H60V180H0V120Z" fill="#6C2D2D"/>
+<path d="M60 180V181H61V180H60ZM0 180H-1V181H0V180ZM59 120V180H61V120H59ZM60 179H0V181H60V179ZM1 180V120H-1V180H1Z" fill="black" mask="url(#path-14-inside-7_2_18)"/>
+<mask id="path-16-inside-8_2_18" fill="white">
+<path d="M120 120H180V180H120V120Z"/>
+</mask>
+<path d="M120 120H180V180H120V120Z" fill="#52EACE"/>
+<path d="M180 180V181H181V180H180ZM120 180H119V181H120V180ZM179 120V180H181V120H179ZM180 179H120V181H180V179ZM121 180V120H119V180H121Z" fill="black" mask="url(#path-16-inside-8_2_18)"/>
+</svg>
