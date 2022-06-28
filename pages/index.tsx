@@ -4,6 +4,9 @@ import styles from '../styles/Home.module.css'
 
 const Home: NextPage = () => {
 
+  const x: number[] = Array.from(Array(1617).keys());
+  const y: number[] = Array.from(Array(700).keys());
+
   return (
     <div>
       <Head>
@@ -13,10 +16,11 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <div className={styles.canvas}>
-          <table className={styles.canvasTable}>
-            <tbody>
-            </tbody>
-          </table>
+          <div className={styles.canvasPixels}>
+            {x.map((number) =>
+              <div className={styles.canvasPixel}></div>
+            )}
+          </div>
         </div>
       </main>
     </div>
