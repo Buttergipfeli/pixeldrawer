@@ -2,6 +2,7 @@ import type { NextPage } from 'next';
 import Head from 'next/head';
 import { Canvas } from '../components/canvas/Canvas';
 import { ColorRegister } from '../components/colorregister/ColorRegister';
+import { Download } from '../components/download/Download';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
@@ -17,6 +18,7 @@ const Home: NextPage = () => {
         <div className={styles.contents}>
           <Canvas></Canvas>
           <ColorRegister></ColorRegister>
+          <Download></Download>
         </div>
       </main>
     </div>
