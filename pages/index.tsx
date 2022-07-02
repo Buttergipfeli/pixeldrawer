@@ -1,11 +1,10 @@
-import type { NextPage } from 'next'
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import type { NextPage } from 'next';
+import Head from 'next/head';
+import { Canvas } from '../components/canvas/Canvas';
+import { ColorRegister } from '../components/colorregister/ColorRegister';
+import styles from '../styles/Home.module.css';
 
 const Home: NextPage = () => {
-
-  const x: number[] = Array.from(Array(1617).keys());
-  const y: number[] = Array.from(Array(700).keys());
 
   return (
     <div>
@@ -15,16 +14,13 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div className={styles.canvas}>
-          <div className={styles.canvasPixels}>
-            {x.map((number) =>
-              <div className={styles.canvasPixel}></div>
-            )}
-          </div>
+        <div className={styles.contents}>
+          <Canvas></Canvas>
+          <ColorRegister></ColorRegister>
         </div>
       </main>
     </div>
-  )
+  );
 }
 
 export default Home
