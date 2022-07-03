@@ -1,12 +1,29 @@
 import { NextPage } from "next";
+import { ChangeEvent } from "react";
 import styles from './ColorPicker.module.css';
 
-const ColorPicker: NextPage = () => {
+interface Props {
+    color: string;
+    colorHandler: (event: ChangeEvent<HTMLInputElement>) => void;
+}
+
+const ColorPicker: NextPage<Props> = ({ color, colorHandler }) => {
     return (
         <div className={styles.colorPicker}>
-            <input type='color' className={styles.color} />
+            <input
+                type='color'
+                className={styles.color}
+                value={color}
+                onChange={(event) => colorHandler(event)}
+            />
             <div className={styles.superColorText}>
-                <span className={styles.colorText}>#00FF00</span>
+                <input
+                    className={styles.colorText}
+                    type='text'
+                    value={color}
+                    placeholder='#FFFFFF'
+                    onChange={(event) => colorHandler(event)}
+                />
             </div>
         </div>
 
