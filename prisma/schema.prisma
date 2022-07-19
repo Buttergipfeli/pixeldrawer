@@ -3,6 +3,7 @@
 
 generator client {
   provider = "prisma-client-js"
+  previewFeatures= ["interactiveTransactions"]
 }
 
 datasource db {
@@ -22,26 +23,10 @@ model color {
   pixel pixel[]
 }
 
-model coordinate_x {
-  id           Int     @id @default(autoincrement())
-  coordinate_x String
-  pixel        pixel[]
-}
-
-model coordinate_y {
-  id           Int     @id @default(autoincrement())
-  coordinate_y String
-  pixel        pixel[]
-}
-
 model pixel {
   id              Int          @id @default(autoincrement())
   username_fk     Int
   color_fk        Int
-  coordinate_x_fk Int
-  coordinate_y_fk Int
   username        username     @relation(fields: [username_fk], references: [id])
   color           color        @relation(fields: [color_fk], references: [id])
-  coordinate_x    coordinate_x @relation(fields: [coordinate_x_fk], references: [id])
-  coordinate_y    coordinate_y @relation(fields: [coordinate_y_fk], references: [id])
 }

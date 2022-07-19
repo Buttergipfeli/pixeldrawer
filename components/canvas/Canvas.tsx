@@ -1,11 +1,17 @@
+import { pixel } from '@prisma/client';
 import { NextPage } from 'next';
 import { useState } from 'react';
 import styles from './Canvas.module.css';
+import { canvasService } from './service/canvas.service';
 
-const Canvas: NextPage = () => {
+type Props = {
+    pixels: pixel[]
+}
 
-    const [selected, setSelected] = useState<number[]>([]);
-    const x: number[] = Array.from(Array(49).keys());
+const Canvas: NextPage<Props> = ({ pixels }) => {
+
+    const [selected, setSelected] = useState<number>(0);
+    const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
 
     return (
@@ -13,24 +19,26 @@ const Canvas: NextPage = () => {
             <div className={styles.canvas}>
                 <div className={styles.canvasLayout}>
                     <div className={styles.canvasPixels}>
-                        {y.map((numberY) =>
-                            <div key={numberY} className={styles.tableRow}>
-                                {x.map((numberX) =>
-                                    <div
-                                        key={numberX}
-                                        className={styles.tableCell}
-                                        style={(
-                                            selected.length > 0 && selected[0] === numberX && selected[1] === numberY ?
-                                                { backgroundColor: 'rgba(13, 169, 236, 0.5)' } :
-                                                {}
-                                        )}
-                                        onClick={() => setSelected([numberX, numberY])}
-                                    >
-                                        <div className={styles.canvasPixel}></div>
-                                    </div>
-                                )}
-                            </div>
-                        )}
+                        {!convertedPixels.loading &&
+                            y.map((pCY, index) =>
+                                <div key={index} className={styles.tableRow}>
+                                    {convertedPixels.pixelX[index].map((pX) =>
+                                        <div
+                                            key={pX.id}
+                                            className={styles.tableCell}
+                                            style={(
+                                                selected > 0 && selected === pX.id ?
+                                                    { backgroundColor: 'rgba(13, 169, 236, 0.5)' } :
+                                                    {}
+                                            )}
+                                            onClick={() => setSelected(pX.id)}
+                                        >
+                                            <div className={styles.canvasPixel}></div>
+                                        </div>
+                                    )}
+                                </div>
+                            )
+                        }
                     </div>
                 </div>
             </div>

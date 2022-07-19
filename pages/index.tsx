@@ -1,11 +1,32 @@
+import { pixel } from '@prisma/client';
 import type { NextPage } from 'next';
 import Head from 'next/head';
+import { useEffect, useState } from 'react';
 import { Canvas } from '../components/canvas/Canvas';
 import { ColorRegister } from '../components/colorregister/ColorRegister';
 import { Download } from '../components/download/Download';
+import { pixelsService } from '../service/pixels.service';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = () => {
+const Home: NextPage = (props) => {
+
+  const [errorMessage, setErrorMessage] = useState('');
+  const [pixels, setPixels] = useState<pixel[]>([]);
+
+  useEffect(() => {
+    getAllPixels();
+  }, []);
+
+  const getAllPixels = async (): Promise<void> => {
+    const response = await pixelsService.getAllPixels();
+
+    if (typeof response === 'string') {
+      setErrorMessage(response);
+      return;
+    }
+    setPixels(response);
+
+  }
 
   return (
     <div>
@@ -16,7 +37,10 @@ const Home: NextPage = () => {
       </Head>
       <main>
         <div className={styles.contents}>
-          <Canvas></Canvas>
+          {errorMessage &&
+            <div className='errorMessage'>{errorMessage}</div>
+          }
+          <Canvas pixels={pixels}></Canvas>
           <ColorRegister></ColorRegister>
           <Download></Download>
         </div>
