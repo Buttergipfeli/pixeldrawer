@@ -17,19 +17,10 @@ type Props = {
 
 const ColorRegister: NextPage<Props> = ({ drawPixel, buttonDisabled, colorPickerInput, usernameInput }) => {
 
-    const colorHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        let { value } = event.target
-        value = value.toUpperCase();
-        if (colorPickerInput.current[0] !== null && colorPickerInput.current[1] !== null) {
-            colorPickerInput.current[0].value = value;
-            colorPickerInput.current[1].value = value;
-        }
-    }
-
     return (
         <div className={styles.colorRegister}>
             <div className={styles.colorAndUsername}>
-                <ColorPicker colorHandler={colorHandler} colorPickerInput={colorPickerInput}></ColorPicker>
+                <ColorPicker colorPickerInput={colorPickerInput}></ColorPicker>
                 <UsernameInput usernameInput={usernameInput}></UsernameInput>
             </div>
             <DrawingButton onClick={() => drawPixel()} disabled={buttonDisabled}></DrawingButton>
