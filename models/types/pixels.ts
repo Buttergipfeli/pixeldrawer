@@ -1,6 +1,6 @@
 import { pixel, Prisma } from "@prisma/client";
 
-export type PixelsApi = {
+export type PixelsApi = {
     message: string;
     pixels?: pixel[]
 }
@@ -8,5 +8,9 @@ export type PixelsApi = {
 export type PixelsApiBody = {
     username: Prisma.usernameCreateInput;
     color: Prisma.colorCreateInput;
-    pixel: Prisma.pixelCreateInput;
+}
+
+export type PixelsPathApi = {
+    message: string;
+    pixel?: pixel;
 }

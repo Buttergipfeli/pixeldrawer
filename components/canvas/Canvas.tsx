@@ -1,16 +1,18 @@
-import { pixel } from '@prisma/client';
+import { color, pixel } from '@prisma/client';
 import { NextPage } from 'next';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import styles from './Canvas.module.css';
 import { canvasService } from './service/canvas.service';
 
 type Props = {
-    pixels: pixel[]
+    pixels: (pixel & { color: color; })[];
+    selected: number;
+    setSelected: Dispatch<SetStateAction<number>>
 }
 
-const Canvas: NextPage<Props> = ({ pixels }) => {
+const Canvas: NextPage<Props> = ({ pixels, selected, setSelected }) => {
 
-    const [selected, setSelected] = useState<number>(0);
+    console.log(pixels); // --> fix too much updates
     const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
 
@@ -29,7 +31,7 @@ const Canvas: NextPage<Props> = ({ pixels }) => {
                                             style={(
                                                 selected > 0 && selected === pX.id ?
                                                     { backgroundColor: 'rgba(13, 169, 236, 0.5)' } :
-                                                    {}
+                                                    { backgroundColor: pX.color.color }
                                             )}
                                             onClick={() => setSelected(pX.id)}
                                         >

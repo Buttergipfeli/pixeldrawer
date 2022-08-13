@@ -3,28 +3,36 @@ import styles from './ColorRegister.module.css';
 import { ColorPicker } from '../subcomponents/colorpicker/ColorPicker';
 import { UsernameInput } from '../subcomponents/usernameinput/UsernameInput';
 import { DrawingButton } from '../subcomponents/drawingbutton/DrawingButton';
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, Dispatch, LegacyRef, MutableRefObject, SetStateAction, useCallback, useState } from 'react';
+import { Username } from '../../models/classes/Username';
+import { Color } from '../../models/classes/Color';
+import { color, pixel } from '@prisma/client'
 
-const ColorRegister: NextPage = () => {
+type Props = {
+    drawPixel: () => Promise<void>;
+    buttonDisabled: boolean;
+    colorPickerInput: MutableRefObject<(HTMLInputElement | null)[]>;
+    usernameInput: MutableRefObject<HTMLInputElement | null>;
+}
 
-    const [color, setColor] = useState('');
-    const [username, setUsername] = useState('');
+const ColorRegister: NextPage<Props> = ({ drawPixel, buttonDisabled, colorPickerInput, usernameInput }) => {
 
     const colorHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setColor(event.target.value.toUpperCase());
-    }
-
-    const usernameHandler = (event: ChangeEvent<HTMLInputElement>) => {
-        setUsername(event.target.value);
+        let { value } = event.target
+        value = value.toUpperCase();
+        if (colorPickerInput.current[0] !== null && colorPickerInput.current[1] !== null) {
+            colorPickerInput.current[0].value = value;
+            colorPickerInput.current[1].value = value;
+        }
     }
 
     return (
         <div className={styles.colorRegister}>
             <div className={styles.colorAndUsername}>
-                <ColorPicker color={color} colorHandler={colorHandler}></ColorPicker>
-                <UsernameInput username={username} usernameHandler={usernameHandler}></UsernameInput>
+                <ColorPicker colorHandler={colorHandler} colorPickerInput={colorPickerInput}></ColorPicker>
+                <UsernameInput usernameInput={usernameInput}></UsernameInput>
             </div>
-            <DrawingButton></DrawingButton>
+            <DrawingButton onClick={() => drawPixel()} disabled={buttonDisabled}></DrawingButton>
         </div>
     );
 }

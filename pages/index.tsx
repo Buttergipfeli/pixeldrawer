@@ -1,17 +1,25 @@
 import { pixel } from '@prisma/client';
 import type { NextPage } from 'next';
 import Head from 'next/head';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Canvas } from '../components/canvas/Canvas';
 import { ColorRegister } from '../components/colorregister/ColorRegister';
 import { Download } from '../components/download/Download';
+import { Color } from '../models/classes/Color';
+import { color } from '@prisma/client'
+import { Username } from '../models/classes/Username';
+import { homeService } from '../service/home.service';
 import { pixelsService } from '../service/pixels.service';
 import styles from '../styles/Home.module.css';
 
 const Home: NextPage = (props) => {
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [pixels, setPixels] = useState<pixel[]>([]);
+  const [pixels, setPixels] = useState<(pixel & { color: color })[]>([]);
+  const colorPickerInput = useRef<Array<HTMLInputElement | null>>([]);
+  const usernameInput = useRef<HTMLInputElement | null>(null);
+  const [buttonDisabled, setButtonDisabled] = useState(false);
+  const [selected, setSelected] = useState(0);
 
   useEffect(() => {
     getAllPixels();
@@ -28,6 +36,34 @@ const Home: NextPage = (props) => {
 
   }
 
+  const drawPixel = async (): Promise<void> => {
+    setButtonDisabled(true);
+    const validateResponse = homeService.validatePixelInput(selected, colorPickerInput, usernameInput);
+    if (validateResponse.error) {
+      setErrorMessage(validateResponse.message);
+      setButtonDisabled(false);
+      return;
+    }
+
+    const response = await pixelsService.drawPixel(selected, colorPickerInput, usernameInput);
+
+    if (typeof response === 'string') {
+      setErrorMessage(response);
+      setButtonDisabled(false);
+      return;
+    }
+
+    const pixelsLength = pixels.length;
+    for (let i = 0; i < pixelsLength; i++) {
+      if (pixels[i].id === response.id) {
+        let tmpPixels = pixels;
+        tmpPixels[i] = response;
+        setPixels(tmpPixels);
+      }
+    }
+    setButtonDisabled(false);
+  }
+
   return (
     <div>
       <Head>
@@ -40,8 +76,17 @@ const Home: NextPage = (props) => {
           {errorMessage &&
             <div className='errorMessage'>{errorMessage}</div>
           }
-          <Canvas pixels={pixels}></Canvas>
-          <ColorRegister></ColorRegister>
+          <Canvas
+            pixels={pixels}
+            selected={selected}
+            setSelected={setSelected}
+          ></Canvas>
+          <ColorRegister
+            drawPixel={drawPixel}
+            buttonDisabled={buttonDisabled}
+            colorPickerInput={colorPickerInput}
+            usernameInput={usernameInput}
+          ></ColorRegister>
           <Download></Download>
         </div>
       </main>

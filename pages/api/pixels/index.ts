@@ -1,18 +1,18 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { PixelsApi, PixelsApiBody } from '../../../models/types/pixels';
 import { prismaClientInstance } from '../../../constants/prisma/prisma';
-import { hexColor } from '../../../constants/regex/regex';
-import { Prisma } from '@prisma/client';
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<PixelsApi>
 ) {
 
-  if (req.method === 'PUT') {
+  if (req.method === 'POST') {
   } else if (req.method === 'GET') {
     try {
-      const pixels = await prismaClientInstance.pixel.findMany({});
+      const pixels = await prismaClientInstance.pixel.findMany({
+        include: { color: true }
+      });
       return res.status(200).json({ message: 'Got all pixels', pixels: pixels });
     } catch {
       return res.status(500).json({ message: 'Error while getting all pixels!' });

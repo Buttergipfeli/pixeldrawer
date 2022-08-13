@@ -1,19 +1,17 @@
 import { NextPage } from "next";
-import { ChangeEvent } from "react";
+import { ChangeEvent, MutableRefObject } from "react";
 import styles from './UsernameInput.module.css';
 
 interface Props {
-    username: string;
-    usernameHandler: (event: ChangeEvent<HTMLInputElement>) => void;
+    usernameInput: MutableRefObject<HTMLInputElement | null>;
 }
 
-const UsernameInput: NextPage<Props> = ({ username, usernameHandler }) => {
+const UsernameInput: NextPage<Props> = ({ usernameInput }) => {
     return (
         <input
             className={styles.input}
             placeholder='Username'
-            value={username}
-            onChange={(event) => usernameHandler(event)}
+            ref={usernameInput}
         />
     );
 }

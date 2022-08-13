@@ -1,12 +1,12 @@
-import { pixel } from "@prisma/client";
+import { color, pixel } from "@prisma/client";
 
 export const canvasService = {
     convertPixels
 }
 
-function convertPixels(pixels: pixel[]): { pixelX: pixel[][], loading: boolean } {
-    let pixelX: pixel[][] = [];
-    let pixelXContents: pixel[] = [];
+function convertPixels(pixels: (pixel & { color: color; })[]): { pixelX: (pixel & { color: color; })[][], loading: boolean } {
+    let pixelX: (pixel & { color: color; })[][] = [];
+    let pixelXContents: (pixel & { color: color; })[] = [];
 
     pixels.map((p, index) => {
         ((index + 1) % 49 === 0

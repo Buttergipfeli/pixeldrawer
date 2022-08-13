@@ -1,9 +1,8 @@
-import { NextPage } from "next";
 import styles from './DrawingButton.module.css';
 
-const DrawingButton: NextPage = () => {
+const DrawingButton = ({ ...props }): JSX.Element => {
     return (
-        <button className={styles.button}>Draw</button>
+        <button {...props} className={styles.button}>Draw</button>
     );
 }
 
