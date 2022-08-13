@@ -5,17 +5,19 @@ import { useEffect, useRef, useState } from 'react';
 import { Canvas } from '../components/canvas/Canvas';
 import { ColorRegister } from '../components/colorregister/ColorRegister';
 import { Download } from '../components/download/Download';
-import { Color } from '../models/classes/Color';
-import { color } from '@prisma/client'
-import { Username } from '../models/classes/Username';
+import { color, username } from '@prisma/client'
 import { homeService } from '../service/home.service';
 import { pixelsService } from '../service/pixels.service';
 import styles from '../styles/Home.module.css';
 
-const Home: NextPage = (props) => {
+type Props = {
+  toolbar: string;
+}
+
+const Home: NextPage<Props> = ({ toolbar }) => {
 
   const [errorMessage, setErrorMessage] = useState('');
-  const [pixels, setPixels] = useState<(pixel & { color: color })[]>([]);
+  const [pixels, setPixels] = useState<(pixel & { color: color, username: username })[]>([]);
   const colorPickerInput = useRef<Array<HTMLInputElement | null>>([]);
   const usernameInput = useRef<HTMLInputElement | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
@@ -80,6 +82,9 @@ const Home: NextPage = (props) => {
             pixels={pixels}
             selected={selected}
             setSelected={setSelected}
+            toolbar={toolbar}
+            username={(usernameInput.current !== null ? usernameInput.current.value: '')}
+            color={(colorPickerInput.current[0] ? colorPickerInput.current[0].value : '')}
           ></Canvas>
           <ColorRegister
             drawPixel={drawPixel}

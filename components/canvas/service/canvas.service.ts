@@ -1,12 +1,14 @@
-import { color, pixel } from "@prisma/client";
+import { color, pixel, username } from "@prisma/client";
+import { Dispatch, SetStateAction } from "react";
 
 export const canvasService = {
-    convertPixels
+    convertPixels,
+    selectedHandler
 }
 
-function convertPixels(pixels: (pixel & { color: color; })[]): { pixelX: (pixel & { color: color; })[][], loading: boolean } {
-    let pixelX: (pixel & { color: color; })[][] = [];
-    let pixelXContents: (pixel & { color: color; })[] = [];
+function convertPixels(pixels: (pixel & { color: color, username: username })[]): { pixelX: (pixel & { color: color, username: username })[][], loading: boolean } {
+    let pixelX: (pixel & { color: color, username: username })[][] = [];
+    let pixelXContents: (pixel & { color: color, username: username })[] = [];
 
     pixels.map((p, index) => {
         ((index + 1) % 49 === 0
@@ -23,4 +25,14 @@ function convertPixels(pixels: (pixel & { color: color; })[]): { pixelX: (pixel 
         return { pixelX: pixelX, loading: true };
     }
     return { pixelX: pixelX, loading: false };
+}
+
+function selectedHandler(selectedPixel: (pixel & { color: color, username: username }),
+    setSelected: Dispatch<SetStateAction<number>>,
+    setToolbarInfos: Dispatch<SetStateAction<{
+        username: string;
+        color: string;
+    }>>) {
+    setToolbarInfos({ username: selectedPixel.username.username, color: selectedPixel.color.color });
+    setSelected(selectedPixel.id);
 }

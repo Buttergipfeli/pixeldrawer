@@ -1,4 +1,4 @@
-import { color, pixel } from "@prisma/client";
+import { color, pixel, username } from "@prisma/client";
 import { MutableRefObject } from "react";
 import { Color } from "../models/classes/Color";
 import { Username } from "../models/classes/Username";
@@ -14,7 +14,7 @@ const headers = {
     'Content-Type': 'application/json'
 }
 
-async function getAllPixels(): Promise<string | (pixel & { color: color; })[]> {
+async function getAllPixels(): Promise<string | (pixel & { color: color, username: username })[]> {
     const response = await fetch(API_URL, {
         method: 'GET',
         headers: headers
@@ -25,18 +25,18 @@ async function getAllPixels(): Promise<string | (pixel & { color: color; })[]> {
     if (!response.ok) {
         return data.message;
     }
-    return data.pixels as (pixel & { color: color; })[];
+    return data.pixels as (pixel & { color: color, username: username })[];
 }
 
-async function drawPixel(pid: number, color: MutableRefObject<(HTMLInputElement | null)[]>, username: MutableRefObject<HTMLInputElement | null>): Promise<string | (pixel & { color: color; })> {
-    if (color.current[0] === null) {
+async function drawPixel(pid: number, color: MutableRefObject<(HTMLInputElement | null)[]>, username: MutableRefObject<HTMLInputElement | null>): Promise<string | (pixel & { color: color, username: username })> {
+    if (color.current[1] === null) {
         return 'Color can\'t be null!';
     }
     if (username.current === null) {
         return 'Username can\t be null!';
     }
 
-    const colorObject = new Color(color.current[0].value);
+    const colorObject = new Color(color.current[1].value);
     const usernameObject = new Username(username.current.value);
 
     const response = await fetch(API_URL + '/' + pid, {
@@ -50,5 +50,5 @@ async function drawPixel(pid: number, color: MutableRefObject<(HTMLInputElement 
     if (!response.ok) {
         return data.message;
     }
-    return data.pixel as (pixel & { color: color; });
+    return data.pixel as (pixel & { color: color, username: username; });
 }

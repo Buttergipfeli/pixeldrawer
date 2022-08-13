@@ -48,8 +48,27 @@
 
 .canvasPixel {
   margin: 0 !important;
-  box-shadow: 2px 0 0 0 #88F876, 0 2px 0 0 #88F876, 2px 2px 0 0 #88F876,
-    2px 0 0 0 #88F876 inset, 0 2px 0 0 #88F876 inset;
+  box-shadow: 2px 0 0 0 #88f876, 0 2px 0 0 #88f876, 2px 2px 0 0 #88f876,
+    2px 0 0 0 #88f876 inset, 0 2px 0 0 #88f876 inset;
   width: 20px;
   height: 20px;
+}
+
+.toolbar {
+  position: absolute;
+  min-width: 200px;
+  width: fit-content;
+  background-color: rgba(148, 148, 148, 0.7);
+  pointer-events: none;
+  height: 50px;
+  border-radius: 10px;
+  border: 2px solid black;
+  padding: 5px;
+  margin: 5px 0 0 5px;
+  display: flex;
+}
+
+.toolbarText {
+  display: flex;
+  flex-direction: column;
 }

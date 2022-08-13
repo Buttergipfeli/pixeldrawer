@@ -42,7 +42,7 @@ export default async function handler(
                         username: { connect: { id: searchUserName.id } },
                         color: { connect: { id: searchColor.id } }
                     },
-                    include: { color: true }
+                    include: { color: true, username: true }
                 });
 
                 return { username: searchUserName, color: searchColor, pixel: updatePixel }

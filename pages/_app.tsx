@@ -1,16 +1,24 @@
 import '../styles/globals.css'
 import type { AppProps } from 'next/app'
-import { Navbar } from '../components/navbar/Navbar';
+import { NavbarContent } from '../components/navbarcontent/NavbarContent'
+import { useEffect, useState } from 'react';
 
 function MyApp({ Component, pageProps }: AppProps) {
+
+  const [toolbar, setToolbar] = useState<string>('');
+
+  useEffect(() => {
+    setToolbar(localStorage.getItem('pixeldrawer-toolbar') ?? '');
+  }, [])
+
   return (
     <div>
-      <Navbar></Navbar>
+      <NavbarContent toolbar={toolbar} setToolbar={setToolbar}></NavbarContent>
       <div className='container'>
-        <Component {...pageProps} />
+        <Component {...pageProps} toolbar={toolbar} />
       </div>
     </div >
   );
 }
 
-export default MyApp
+export default MyApp;

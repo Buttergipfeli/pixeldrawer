@@ -11,7 +11,7 @@ export default async function handler(
   } else if (req.method === 'GET') {
     try {
       const pixels = await prismaClientInstance.pixel.findMany({
-        include: { color: true }
+        include: { color: true, username: true }
       });
       return res.status(200).json({ message: 'Got all pixels', pixels: pixels });
     } catch {
