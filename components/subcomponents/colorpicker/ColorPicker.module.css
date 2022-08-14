@@ -13,6 +13,12 @@
   width: 50px;
   height: 40px;
   border: 1px solid #000000;
+  -webkit-border-radius: 0px;
+  border-radius: 0;
+}
+
+.color::-webkit-color-swatch-wrapper {
+  padding: 0;
 }
 
 .color::-webkit-color-swatch,

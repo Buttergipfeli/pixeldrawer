@@ -10,6 +10,8 @@ function colorHandler(event: ChangeEvent<HTMLInputElement> | string,
         if (colorPickerInput.current[0] !== null && colorPickerInput.current[1] !== null) {
             colorPickerInput.current[0].value = '#FFFFFF';
             colorPickerInput.current[1].value = '#FFFFFF';
+
+            colorPickerInput.current[0].style.backgroundColor = '#FFFFFF';
         }
         return;
     }
@@ -18,5 +20,7 @@ function colorHandler(event: ChangeEvent<HTMLInputElement> | string,
     if (colorPickerInput.current[0] !== null && colorPickerInput.current[1] !== null) {
         colorPickerInput.current[0].value = value;
         colorPickerInput.current[1].value = value;
+
+        colorPickerInput.current[0].style.backgroundColor = value;
     }
 }

@@ -15,6 +15,7 @@ const ColorPicker: NextPage<Props> = ({ colorPickerInput }) => {
                 type='color'
                 className={styles.color}
                 ref={el => colorPickerInput.current[0] = el}
+                style={{ backgroundColor: '#000000' }}
                 onChange={(event) => colorPickerService.colorHandler(event, colorPickerInput)}
                 onClick={() => colorPickerService.colorHandler('', colorPickerInput)}
             />
