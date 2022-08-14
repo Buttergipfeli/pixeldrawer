@@ -10,5 +10,23 @@
 }
 
 .button:hover {
-    cursor: pointer;
+  cursor: pointer;
+}
+
+@media (max-width: 769px) {
+  .button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 769px) {
+  .button {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 530px) {
+  .button {
+    font-size: 15px;
+  }
 }

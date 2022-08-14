@@ -36,3 +36,38 @@
   border: none;
   padding: 10px;
 }
+
+@media (max-width: 769px) {
+  .colorPicker {
+    width: 253.5px;
+  }
+}
+
+@media (max-width: 715px) {
+  .colorText {
+    font-size: 20px;
+  }
+}
+
+@media (max-width: 530px) {
+  .color {
+    height: 30px;
+    width: 40px;
+  }
+
+  .colorText {
+    font-size: 15px;
+  }
+}
+
+@media (max-width: 385px) {
+  .color {
+    width: 30px;
+  }
+}
+
+@media (max-width: 362px) {
+  .color {
+    width: 25px;
+  }
+}

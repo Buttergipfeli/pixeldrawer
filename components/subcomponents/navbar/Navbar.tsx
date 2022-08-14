@@ -25,9 +25,9 @@ const Navbar: NextPage<Props> = ({ toolbar, setToolbar }) => {
                 <img className={styles.logo} alt='Logo' src='/images/Logo.svg' />
                 <h3 className={styles.title}>Pixeldrawer</h3>
             </div>
-            <div className={styles.toolbar}>
-                <svg style={{transform: toolbar}} onClick={() => toggleToolbar()} width="163" height="280" viewBox="0 0 163 280" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <line x1="81.5" y1="265.64" x2="81.5" y2="28.5" stroke="black" stroke-width="27" stroke-linecap="round" />
+            <div className={styles.toolbar} style={(toolbar !== '' ? { transform: toolbar } : {})}>
+                <svg onClick={() => toggleToolbar()} width="163" height="280" viewBox="0 0 163 280" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <line x1="81.5" y1="265.64" x2="81.5" y2="28.5" stroke="black" strokeWidth="27" strokeLinecap="round" />
                     <path d="M37.5 0L163 0V43L0 43L37.5 0Z" fill="black" />
                 </svg>
             </div>

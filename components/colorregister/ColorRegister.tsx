@@ -19,14 +19,18 @@ const ColorRegister: NextPage<Props> = ({ drawPixel, buttonDisabled, colorPicker
 
     return (
         <div className={styles.colorRegister}>
-            <div className={styles.colorAndUsername}>
-                <ColorPicker colorPickerInput={colorPickerInput} />
-                <UsernameInput usernameInput={usernameInput} />
+            <div className={styles.colorRegisterContents}>
+                <div className={styles.colorAndUsername}>
+                    <ColorPicker colorPickerInput={colorPickerInput} />
+                    <UsernameInput usernameInput={usernameInput} />
+                </div>
+                <div className={styles.buttonDiv}>
+                    <DrawingButton
+                        onClick={() => drawPixel()}
+                        disabled={buttonDisabled}
+                    />
+                </div>
             </div>
-            <DrawingButton
-                onClick={() => drawPixel()}
-                disabled={buttonDisabled}
-            />
         </div>
     );
 }
