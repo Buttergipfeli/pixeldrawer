@@ -22,6 +22,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
   const usernameInput = useRef<HTMLInputElement | null>(null);
   const [buttonDisabled, setButtonDisabled] = useState(false);
   const [selected, setSelected] = useState(0);
+  const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
 
   useEffect(() => {
     getAllPixels();
@@ -63,6 +64,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
         setPixels(tmpPixels);
       }
     }
+    setToolbarInfos({ username: response.username.username, color: response.color.color });
     setButtonDisabled(false);
   }
 
@@ -83,8 +85,8 @@ const Home: NextPage<Props> = ({ toolbar }) => {
             selected={selected}
             setSelected={setSelected}
             toolbar={toolbar}
-            username={(usernameInput.current !== null ? usernameInput.current.value: '')}
-            color={(colorPickerInput.current[0] ? colorPickerInput.current[0].value : '')}
+            toolbarInfos={toolbarInfos}
+            setToolbarInfos={setToolbarInfos}
           ></Canvas>
           <ColorRegister
             drawPixel={drawPixel}

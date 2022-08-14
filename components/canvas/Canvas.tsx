@@ -9,20 +9,23 @@ type Props = {
     selected: number;
     setSelected: Dispatch<SetStateAction<number>>;
     toolbar: string;
-    username: string;
-    color: string;
+    toolbarInfos: { username: string; color: string; };
+    setToolbarInfos: Dispatch<SetStateAction<{ username: string; color: string; }>>;
 }
 
-const Canvas: NextPage<Props> = ({ pixels, selected, setSelected, toolbar, username, color }) => {
+const Canvas: NextPage<Props> = ({ pixels, selected, setSelected, toolbar, toolbarInfos, setToolbarInfos }) => {
 
     const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
-    const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
+    let hoverCanvas = false;
 
     return (
         <div className={styles.canvasBoard}>
             <div className={styles.canvas}>
-                <div className={styles.canvasLayout}>
+                <div
+                    className={styles.canvasLayout}
+                    onClick={() => (!hoverCanvas ? setSelected(0) : {})}
+                >
                     {toolbar !== '' &&
                         <div className={styles.toolbar} style={{ alignItems: (toolbarInfos.username !== '' ? 'center' : '') }}>
                             {toolbarInfos.username !== ''
@@ -41,7 +44,11 @@ const Canvas: NextPage<Props> = ({ pixels, selected, setSelected, toolbar, usern
                             }
                         </div>
                     }
-                    <div className={styles.canvasPixels}>
+                    <div
+                        className={styles.canvasPixels}
+                        onMouseOver={() => hoverCanvas = true}
+                        onMouseOut={() => hoverCanvas = false}
+                    >
                         {!convertedPixels.loading &&
                             y.map((index) =>
                                 <div key={index} className={styles.tableRow}>
@@ -51,12 +58,12 @@ const Canvas: NextPage<Props> = ({ pixels, selected, setSelected, toolbar, usern
                                             className={styles.tableCell}
                                             style={(
                                                 selected > 0 && selected === pX.id ?
-                                                    { backgroundColor: 'rgba(13, 169, 236, 0.5)' } :
-                                                    { backgroundColor: pX.color.color }
+                                                    { backgroundImage: `linear-gradient(rgba(13, 169, 236, 0.5), rgba(13, 169, 236, 0.5)), linear-gradient(${pX.color.color}, ${pX.color.color})` } :
+                                                    { backgroundColor: pX.color.color, backgroundImage: 'none' }
                                             )}
                                             onClick={() => canvasService.selectedHandler(pX, setSelected, setToolbarInfos)}
                                         >
-                                            <div className={styles.canvasPixel}>
+                                            <div className={styles.canvasPixel} style={{}}>
                                             </div>
                                         </div>
                                     )}
