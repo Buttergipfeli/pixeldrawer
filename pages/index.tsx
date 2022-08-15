@@ -7,7 +7,6 @@ import { ColorRegister } from '../components/colorregister/ColorRegister';
 import { Download } from '../components/download/Download';
 import { color, username } from '@prisma/client'
 import { homeService } from '../service/home.service';
-import { pixelsService } from '../service/pixels.service';
 import styles from '../styles/Home.module.css';
 
 type Props = {
@@ -20,52 +19,26 @@ const Home: NextPage<Props> = ({ toolbar }) => {
   const [pixels, setPixels] = useState<(pixel & { color: color, username: username })[]>([]);
   const colorPickerInput = useRef<Array<HTMLInputElement | null>>([]);
   const usernameInput = useRef<HTMLInputElement | null>(null);
-  const [buttonDisabled, setButtonDisabled] = useState(false);
-  const [selected, setSelected] = useState(0);
+  const buttonDisabled = useRef<HTMLButtonElement | null>(null);
+  const selected = useRef(0);
   const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
 
   useEffect(() => {
-    getAllPixels();
+    homeService.getAllPixels(setErrorMessage, setPixels);
   }, []);
 
-  const getAllPixels = async (): Promise<void> => {
-    const response = await pixelsService.getAllPixels();
-
-    if (typeof response === 'string') {
-      setErrorMessage(response);
-      return;
-    }
-    setPixels(response);
-
-  }
-
   const drawPixel = async (): Promise<void> => {
-    setButtonDisabled(true);
-    const validateResponse = homeService.validatePixelInput(selected, colorPickerInput, usernameInput);
-    if (validateResponse.error) {
-      setErrorMessage(validateResponse.message);
-      setButtonDisabled(false);
-      return;
-    }
-
-    const response = await pixelsService.drawPixel(selected, colorPickerInput, usernameInput);
-
-    if (typeof response === 'string') {
-      setErrorMessage(response);
-      setButtonDisabled(false);
-      return;
-    }
-
-    const pixelsLength = pixels.length;
-    for (let i = 0; i < pixelsLength; i++) {
-      if (pixels[i].id === response.id) {
-        let tmpPixels = pixels;
-        tmpPixels[i] = response;
-        setPixels(tmpPixels);
-      }
-    }
-    setToolbarInfos({ username: response.username.username, color: response.color.color });
-    setButtonDisabled(false);
+    buttonDisabled.current !== null ? buttonDisabled.current.disabled = true : {};
+    homeService.drawPixel(
+      selected,
+      colorPickerInput,
+      usernameInput,
+      setErrorMessage,
+      pixels,
+      setPixels,
+      setToolbarInfos
+    );
+    buttonDisabled.current !== null ? buttonDisabled.current.disabled = false : {};
   }
 
   return (
@@ -82,8 +55,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
           }
           <Canvas
             pixels={pixels}
-            selected={selected}
-            setSelected={setSelected}
+            selectedRef={selected}
             toolbar={toolbar}
             toolbarInfos={toolbarInfos}
             setToolbarInfos={setToolbarInfos}

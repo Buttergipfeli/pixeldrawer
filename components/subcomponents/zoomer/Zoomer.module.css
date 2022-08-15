@@ -1,0 +1,42 @@
+.zoomer {
+  position: absolute;
+  right: 38px;
+  margin-top: 5px;
+  background-color: rgba(148, 148, 148, 0.7);
+  height: 100px;
+  width: 50px;
+  border: 2px solid black;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  z-index: 1;
+}
+
+.plus,
+.minus {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50%;
+}
+
+.plus {
+  border-bottom: 1px solid #000000;
+}
+
+.minus {
+  border-top: 1px solid #000000;
+}
+
+.plus:hover,
+.minus:hover {
+  background-color: rgba(148, 148, 148, 1);
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.plus svg,
+.minus svg {
+  width: 30px;
+  height: auto;
+}

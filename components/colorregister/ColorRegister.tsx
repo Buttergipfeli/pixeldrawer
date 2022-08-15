@@ -3,14 +3,11 @@ import styles from './ColorRegister.module.css';
 import { ColorPicker } from '../subcomponents/colorpicker/ColorPicker';
 import { UsernameInput } from '../subcomponents/usernameinput/UsernameInput';
 import { DrawingButton } from '../subcomponents/drawingbutton/DrawingButton';
-import { ChangeEvent, Dispatch, LegacyRef, MutableRefObject, SetStateAction, useCallback, useState } from 'react';
-import { Username } from '../../models/classes/Username';
-import { Color } from '../../models/classes/Color';
-import { color, pixel } from '@prisma/client'
+import { MutableRefObject } from 'react';
 
 type Props = {
     drawPixel: () => Promise<void>;
-    buttonDisabled: boolean;
+    buttonDisabled: MutableRefObject<HTMLButtonElement | null>;
     colorPickerInput: MutableRefObject<(HTMLInputElement | null)[]>;
     usernameInput: MutableRefObject<HTMLInputElement | null>;
 }
@@ -27,7 +24,7 @@ const ColorRegister: NextPage<Props> = ({ drawPixel, buttonDisabled, colorPicker
                 <div className={styles.buttonDiv}>
                     <DrawingButton
                         onClick={() => drawPixel()}
-                        disabled={buttonDisabled}
+                        reference={buttonDisabled}
                     />
                 </div>
             </div>

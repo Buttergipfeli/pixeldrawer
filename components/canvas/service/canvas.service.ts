@@ -1,5 +1,5 @@
 import { color, pixel, username } from "@prisma/client";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, MutableRefObject, SetStateAction } from "react";
 
 export const canvasService = {
     convertPixels,
@@ -29,10 +29,15 @@ function convertPixels(pixels: (pixel & { color: color, username: username })[])
 
 function selectedHandler(selectedPixel: (pixel & { color: color, username: username }),
     setSelected: Dispatch<SetStateAction<number>>,
+    selectedRef: MutableRefObject<number>,
     setToolbarInfos: Dispatch<SetStateAction<{
         username: string;
         color: string;
     }>>) {
+
+    selectedRef.current = selectedPixel.id;
+
     setToolbarInfos({ username: selectedPixel.username.username, color: selectedPixel.color.color });
     setSelected(selectedPixel.id);
+
 }
