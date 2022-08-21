@@ -2,8 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
-  previewFeatures= ["interactiveTransactions"]
+  provider        = "prisma-client-js"
+  previewFeatures = ["interactiveTransactions"]
 }
 
 datasource db {
@@ -24,9 +24,14 @@ model color {
 }
 
 model pixel {
-  id              Int          @id @default(autoincrement())
-  username_fk     Int
-  color_fk        Int
-  username        username     @relation(fields: [username_fk], references: [id])
-  color           color        @relation(fields: [color_fk], references: [id])
+  id          Int      @id @default(autoincrement())
+  username_fk Int
+  color_fk    Int
+  username    username @relation(fields: [username_fk], references: [id])
+  color       color    @relation(fields: [color_fk], references: [id])
+}
+
+model image {
+  image_number Int    @unique
+  image_name   String
 }

@@ -1,4 +1,4 @@
-const prismaClientInstance = require('../constants/prisma/prisma');
+const prismaClientInstance = require('../../constants/prisma/prisma');
 
 async function getAllPixels() {
     return await prismaClientInstance.pixel.findMany({
