@@ -12,14 +12,14 @@ type Props = {
     toolbar: string;
     toolbarInfos: { username: string; color: string; };
     setToolbarInfos: Dispatch<SetStateAction<{ username: string; color: string; }>>;
+    zoomProps: MutableRefObject<HTMLDivElement | null>;
 }
 
-const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos }) => {
+const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos, zoomProps }) => {
 
     const [selected, setSelected] = useState(0);
 
     const convertedPixels = canvasService.convertPixels(pixels);
-    const zoomProps = useRef<HTMLDivElement | null>(null);
     const y: number[] = Array.from(Array(34).keys());
     let hoverCanvas = false;
 

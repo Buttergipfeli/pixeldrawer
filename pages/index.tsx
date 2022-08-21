@@ -22,6 +22,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
   const buttonDisabled = useRef<HTMLButtonElement | null>(null);
   const selected = useRef(0);
   const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
+  const zoomProps = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     homeService.getAllPixels(setErrorMessage, setPixels);
@@ -59,14 +60,17 @@ const Home: NextPage<Props> = ({ toolbar }) => {
             toolbar={toolbar}
             toolbarInfos={toolbarInfos}
             setToolbarInfos={setToolbarInfos}
-          ></Canvas>
+            zoomProps={zoomProps}
+          />
           <ColorRegister
             drawPixel={drawPixel}
             buttonDisabled={buttonDisabled}
             colorPickerInput={colorPickerInput}
             usernameInput={usernameInput}
-          ></ColorRegister>
-          <Download></Download>
+          />
+          <Download
+            setErrorMessage={setErrorMessage}
+          />
         </div>
       </main>
     </div>
