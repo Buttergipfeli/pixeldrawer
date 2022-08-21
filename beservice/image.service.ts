@@ -1,6 +1,6 @@
 import { color, pixel, username } from "@prisma/client";
 import nodeHtmlToImage from "node-html-to-image";
-import { canvasService } from "../components/canvas/service/canvas.service";
+import prismaClientInstance from "../constants/prisma/prisma";
 import { canvasInHtml } from "./canvashtml.service";
 
 export async function createCanvasImage(
@@ -28,4 +28,8 @@ export async function createCanvasImageBackup(
         output: './public/images/canvasbackups/image.jpeg',
         html: canvasInHtml(pixels)
     });
+}
+
+export async function getAllImages() {
+    return await prismaClientInstance.image.findMany({});
 }

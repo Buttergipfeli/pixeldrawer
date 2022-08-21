@@ -1,5 +1,8 @@
+import { image } from "@prisma/client";
+
 export type GetImageApi = {
     image?: string;
+    images?: image[]
     message: string;
 }
 

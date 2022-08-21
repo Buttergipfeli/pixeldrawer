@@ -1,8 +1,9 @@
 import { NextPage } from "next";
 import styles from './Download.module.css';
 import { Dropdown } from "../subcomponents/dropdown/Dropdown";
-import { Dispatch, MutableRefObject, SetStateAction } from "react";
+import { Dispatch, MutableRefObject, SetStateAction, useState } from "react";
 import { imageService } from "../../service/image.service";
+import { Loader } from "../subcomponents/loader/Loader";
 
 type Props = {
     setErrorMessage: Dispatch<SetStateAction<string>>
@@ -10,11 +11,16 @@ type Props = {
 
 const Download: NextPage<Props> = ({ setErrorMessage }) => {
 
+    const [loading, setLoading] = useState(false);
+
     const downloadHandler = async () => {
+        console.log('click');
+        setLoading(true);
         const response = await imageService.exportCanvasToImage();
         if (response !== null) {
             setErrorMessage(response)
         }
+        setLoading(false);
     }
 
     return (
@@ -22,9 +28,12 @@ const Download: NextPage<Props> = ({ setErrorMessage }) => {
             <Dropdown></Dropdown>
             <div
                 className={styles.downloadText}
-                onClick={() => downloadHandler()}
+                style={(loading ? { cursor: 'default' } : {})}
+                onClick={() => {
+                    (loading ? {} : downloadHandler())
+                }}
             >
-                Download
+                {(loading ? <Loader /> : 'Download')}
             </div>
         </div>
     );

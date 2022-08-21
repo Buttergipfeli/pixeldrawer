@@ -5,7 +5,7 @@ const imageService = require('./startupservice/canvasimage/image.service');
 
 // * * * * * --> Every minute
 // 0 0 * * 0 --> Every week
-cron.schedule('0 0 * * 0', async function () {
+cron.schedule('* * * * *', async function () {
   const pixels = await pixelsService.getAllPixels();
   await imageService.createCanvasImageBackup(pixels);
 });
