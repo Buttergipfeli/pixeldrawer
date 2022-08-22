@@ -10,3 +10,8 @@ export type GetImageFetch = {
     image: string;
     message: string;
 }
+
+export type GetImageDataFetch = {
+    images: image[];
+    message: string;
+}
