@@ -1,8 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import type { PixelsPathApi, PixelsApiBody } from '../../../models/types/pixels';
-import prismaClientInstance from '../../../constants/prisma/prisma';
+const prismaClientInstance: PrismaClient = require('../../../constants/prisma/prisma');
 import { onlyNumber } from '../../../constants/regex/regex';
-import { Prisma, username } from '@prisma/client';
+import { Prisma, PrismaClient, username } from '@prisma/client';
 
 export default async function handler(
     req: NextApiRequest,

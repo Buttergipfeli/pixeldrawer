@@ -10,7 +10,6 @@ cron.schedule('0 0 * * 0', async function () {
   await imageService.createCanvasImageBackup(pixels);
 });
 
-
 const nextConfig = {
   reactStrictMode: true,
 }

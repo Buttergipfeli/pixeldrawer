@@ -17,7 +17,10 @@ async function downloadHandler(
             setErrorMessage(response);
         }
     } else {
-        // Download Backup Image!
+        const response = await imageService.downloadImageBackup(currentImageSelected);
+        if (response !== null) {
+            setErrorMessage(response);
+        }
     }
     setLoading(false);
 }
