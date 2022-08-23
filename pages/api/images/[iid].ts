@@ -41,7 +41,7 @@ export default async function handler(
                 return res.status(200).json({ image: base64Image, message: 'Image downloaded' });
             }
         } catch {
-            return res.status(200).json({ message: 'Unexpected error happened while downloading image' });
+            return res.status(500).json({ message: 'Unexpected error happened while downloading image' });
         }
     }
 
