@@ -8,15 +8,12 @@ export default async function SocketHandler(
     res: NextApiResponseServerIO
 ) {
     if (!res.socket.server.io) {
-        console.log("New Socket");
-
         const httpServer: NetServer = res.socket.server as any;
 
         const io = new Server(httpServer);
 
         res.socket.server.io = io;
     } else {
-        console.log("Socket ist already on");
     }
 
     res.end();
