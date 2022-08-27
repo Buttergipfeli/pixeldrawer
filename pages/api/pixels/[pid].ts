@@ -1,9 +1,10 @@
-import type { NextApiRequest, NextApiResponse } from 'next';
+import type { NextApiRequest } from 'next';
 import type { PixelsApiBody } from '../../../models/types/pixels';
 const prismaClientInstance: PrismaClient = require('../../../constants/prisma/prisma');
 import { onlyNumber } from '../../../constants/regex/regex';
 import { PrismaClient } from '@prisma/client';
 import { NextApiResponseServerIO } from '../../../models/types/nextapiresponseserverio';
+import { validatePixelInput } from '../../../beservice/pixels.service';
 
 export default async function handler(
     req: NextApiRequest,
@@ -17,6 +18,10 @@ export default async function handler(
         }
         const numberPid = parseInt(pid as string);
         const pixelsBody: PixelsApiBody = req.body;
+        const validatePixelInputResponse = validatePixelInput(numberPid, pixelsBody.username.username, pixelsBody.color.color);
+        if (validatePixelInputResponse.error) {
+            return res.status(403).json({ message: validatePixelInputResponse.message, pixel: pixelsBody });
+        }
         try {
             const response = await prismaClientInstance.$transaction(async () => {
                 let searchUserName = await prismaClientInstance.username.findFirst({

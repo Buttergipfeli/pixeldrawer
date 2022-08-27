@@ -38,18 +38,6 @@ async function drawPixel(
     colorPickerInput: MutableRefObject<(HTMLInputElement | null)[]>,
     usernameInput: MutableRefObject<HTMLInputElement | null>,
     setErrorMessage: Dispatch<SetStateAction<string>>,
-    pixels: (pixel & {
-        color: color;
-        username: username;
-    })[],
-    setPixels: Dispatch<SetStateAction<(pixel & {
-        color: color;
-        username: username;
-    })[]>>,
-    setToolbarInfos: Dispatch<SetStateAction<{
-        username: string;
-        color: string;
-    }>>
 ): Promise<void> {
 
     const validateResponse = homeService.validatePixelInput(selected.current, colorPickerInput, usernameInput);
@@ -78,8 +66,8 @@ function validatePixelInput(pid: number, color: MutableRefObject<(HTMLInputEleme
         return { message: 'Username is null!', error: true };
     } else if (!hexColor.test(color.current[0].value)) {
         return { message: 'Color isn\'t in hex!', error: true };
-    } else if (username.current.value.length < 4 || username.current.value.length > 255) {
-        return { message: 'Username is either too long (>255) or too short (<4)!', error: true };
+    } else if (username.current.value.length < 4 || username.current.value.length > 30) {
+        return { message: 'Username is either too long (>30) or too short (<4)!', error: true };
     } else if (pid < 1 || pid > 1666) {
         return { message: 'Your pixel id is either too small or too large', error: true };
     }
