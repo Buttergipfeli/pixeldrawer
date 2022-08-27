@@ -8,6 +8,8 @@ import { Download } from '../components/download/Download';
 import { color, username } from '@prisma/client'
 import { homeService } from '../service/home.service';
 import styles from '../styles/Home.module.css';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
+import { io, Socket } from 'socket.io-client';
 
 type Props = {
   toolbar: string;
@@ -23,10 +25,21 @@ const Home: NextPage<Props> = ({ toolbar }) => {
   const selected = useRef(0);
   const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
   const zoomProps = useRef<HTMLDivElement | null>(null);
+  const socket = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   useEffect(() => {
-    homeService.getAllPixels(setErrorMessage, setPixels);
+    const asyncUseEffect = async () => {
+      const responsePixels = await homeService.getAllPixels(setErrorMessage);
+      if (responsePixels !== null) {
+        homeService.socketInitializer(responsePixels, socket, setPixels, selected, setToolbarInfos);
+      }
+    }
+    asyncUseEffect();
   }, []);
+
+  useEffect(() => () => {
+    if (socket.current) socket.current.disconnect();
+  }, [])
 
   const drawPixel = async (): Promise<void> => {
     buttonDisabled.current !== null ? buttonDisabled.current.disabled = true : {};

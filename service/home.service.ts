@@ -2,28 +2,34 @@ import { hexColor } from '../constants/regex/regex';
 import { Dispatch, MutableRefObject, SetStateAction } from "react";
 import { pixelsService } from "./pixels.service";
 import { color, username, pixel } from '@prisma/client';
+import { io, Socket } from 'socket.io-client';
+import { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 export const homeService = {
     getAllPixels,
     drawPixel,
-    validatePixelInput
+    validatePixelInput,
+    socketInitializer
 }
 
 async function getAllPixels(
     setErrorMessage: Dispatch<SetStateAction<string>>,
-    setPixels: Dispatch<SetStateAction<(pixel & {
+): Promise<
+    (pixel & {
         color: color;
         username: username;
-    })[]>>
-): Promise<void> {
+    })[]
+    |
+    null
+> {
 
     const response = await pixelsService.getAllPixels();
 
     if (typeof response === 'string') {
         setErrorMessage(response);
-        return;
+        return null;
     }
-    setPixels(response);
+    return response;
 
 }
 
@@ -59,15 +65,6 @@ async function drawPixel(
         return;
     }
 
-    const pixelsLength = pixels.length;
-    for (let i = 0; i < pixelsLength; i++) {
-        if (pixels[i].id === response.id) {
-            let tmpPixels = pixels;
-            tmpPixels[i] = response;
-            setPixels(tmpPixels);
-        }
-    }
-    setToolbarInfos({ username: response.username.username, color: response.color.color });
     setErrorMessage('');
 
 }
@@ -88,4 +85,47 @@ function validatePixelInput(pid: number, color: MutableRefObject<(HTMLInputEleme
     }
 
     return { message: 'ok', error: false };
+}
+
+async function socketInitializer(
+    responsePixels: (pixel & {
+        color: color;
+        username: username;
+    })[],
+    socket: MutableRefObject<Socket<DefaultEventsMap, DefaultEventsMap> | undefined>,
+    setPixels: Dispatch<SetStateAction<(pixel & {
+        color: color;
+        username: username;
+    })[]>>,
+    selected: MutableRefObject<number>,
+    setToolbarInfos: Dispatch<SetStateAction<{
+        username: string;
+        color: string;
+    }>>
+) {
+    await fetch("/api/socket");
+    socket.current = io();
+
+    socket.current.on('connect', () => {
+        setPixels(responsePixels);
+    });
+
+    socket.current.on('pixelsPut',
+        (pixel: pixel & {
+            username: username;
+            color: color;
+        }) => {
+            const pixelsLength = responsePixels.length;
+            for (let i = 0; i < pixelsLength; i++) {
+                if (responsePixels[i].id === pixel.id) {
+                    let tmpPixels = responsePixels;
+                    tmpPixels[i] = pixel;
+                    setPixels([...tmpPixels]);
+                    if (selected.current === pixel.id) {
+                        setToolbarInfos({ username: pixel.username.username, color: pixel.color.color });
+                    }
+                }
+            }
+        }
+    );
 }

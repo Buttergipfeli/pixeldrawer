@@ -1,12 +1,13 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import type { PixelsPathApi, PixelsApiBody } from '../../../models/types/pixels';
+import type { PixelsApiBody } from '../../../models/types/pixels';
 const prismaClientInstance: PrismaClient = require('../../../constants/prisma/prisma');
 import { onlyNumber } from '../../../constants/regex/regex';
-import { Prisma, PrismaClient, username } from '@prisma/client';
+import { PrismaClient } from '@prisma/client';
+import { NextApiResponseServerIO } from '../../../models/types/nextapiresponseserverio';
 
 export default async function handler(
     req: NextApiRequest,
-    res: NextApiResponse<PixelsPathApi>
+    res: NextApiResponseServerIO
 ) {
 
     if (req.method === 'PUT') {
@@ -47,6 +48,8 @@ export default async function handler(
 
                 return { username: searchUserName, color: searchColor, pixel: updatePixel }
             });
+
+            res?.socket?.server?.io?.emit('pixelsPut', response.pixel);
 
             return res.status(200).json({ message: 'Pixel got updated and drawn', pixel: response.pixel });
         } catch {
