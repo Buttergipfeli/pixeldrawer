@@ -47,10 +47,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
       selected,
       colorPickerInput,
       usernameInput,
-      setErrorMessage,
-      pixels,
-      setPixels,
-      setToolbarInfos
+      setErrorMessage
     );
     buttonDisabled.current !== null ? buttonDisabled.current.disabled = false : {};
   }
