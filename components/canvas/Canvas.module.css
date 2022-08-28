@@ -23,7 +23,6 @@
 .canvasLayout {
   display: table-cell;
   vertical-align: middle;
-  border: 1px solid pink;
 }
 
 .canvasPixels {

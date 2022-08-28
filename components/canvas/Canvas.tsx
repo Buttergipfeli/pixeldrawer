@@ -18,12 +18,17 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
 
     const [selected, setSelected] = useState(0);
     const [zoomProps, setZoomProps] = useState(1.0);
+    const hoverCanvas = useRef(false);
 
     const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
-    let hoverCanvas = false;
 
     // transform: scale(0.5);
+
+    const selectedHandler = () => {
+        selectedRef.current = 0;
+        setSelected(0);
+    }
 
     return (
         <div className={styles.canvasBoard}>
@@ -36,14 +41,14 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                 }
                 <div
                     className={styles.canvasLayout}
-                    onClick={() => (!hoverCanvas ? () => { selectedRef.current = 0; setSelected(0); } : {})}
+                    onClick={() => (!hoverCanvas.current ? selectedHandler() : {})}
                 >
                     <div
                         className={styles.canvasPixels}
                         style={zoomProps >= 1 ?
                             {
-                                width: `calc(986px * ${zoomProps})`,
-                                height: `calc(700px * ${zoomProps})`
+                                width: `${986 * zoomProps}px`,
+                                height: `${700 * zoomProps}px`
                             } :
                             {
                                 width: '986px',
@@ -51,8 +56,8 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                                 transform: `scale(${zoomProps})`
                             }
                         }
-                        onMouseOver={() => hoverCanvas = true}
-                        onMouseOut={() => hoverCanvas = false}
+                        onMouseOver={() => hoverCanvas.current = true}
+                        onMouseOut={() => hoverCanvas.current = false}
                     >
                         {!convertedPixels.loading &&
                             y.map((index) =>
@@ -77,8 +82,8 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                                         >
                                             <div className={styles.canvasPixel} style={zoomProps >= 1 ?
                                                 {
-                                                    width: `calc(20px ${zoomProps})`,
-                                                    height: `calc(20px ${zoomProps})`
+                                                    width: `${20 * zoomProps}px`,
+                                                    height: `${20 * zoomProps}px`
                                                 } :
                                                 {
                                                     width: '20px',
