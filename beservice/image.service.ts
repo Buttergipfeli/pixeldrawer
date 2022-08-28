@@ -12,7 +12,7 @@ export async function createCanvasImagePuppeteer(
 ) {
     const browser = await puppeteer.launch({
         defaultViewport: { width: 1030, height: 743 },
-        'args': [
+        args: [
             '--no-sandbox',
             '--disable-setuid-sandbox'
         ]
