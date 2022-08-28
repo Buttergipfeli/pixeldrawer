@@ -55,7 +55,7 @@ const Home: NextPage<Props> = ({ toolbar }) => {
     <div>
       <Head>
         <title>Pixeldrawer</title>
-        <meta name="description" content="Realtime pixel canvas" />
+        <meta name="description" content="Real time pixel canvas" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
