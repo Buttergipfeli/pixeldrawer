@@ -12,12 +12,12 @@ type Props = {
     toolbar: string;
     toolbarInfos: { username: string; color: string; };
     setToolbarInfos: Dispatch<SetStateAction<{ username: string; color: string; }>>;
-    zoomProps: MutableRefObject<HTMLDivElement | null>;
 }
 
-const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos, zoomProps }) => {
+const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos }) => {
 
     const [selected, setSelected] = useState(0);
+    const [zoomProps, setZoomProps] = useState(1.0);
 
     const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
@@ -31,7 +31,7 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                 {toolbar !== '' &&
                     <>
                         <Toolbar toolbarInfos={toolbarInfos} selected={selected} />
-                        <Zoomer zoomProps={zoomProps} />
+                        <Zoomer zoomProps={zoomProps} setZoomProps={setZoomProps} />
                     </>
                 }
                 <div
@@ -40,7 +40,17 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                 >
                     <div
                         className={styles.canvasPixels}
-                        ref={zoomProps}
+                        style={zoomProps >= 1 ?
+                            {
+                                width: `calc(986px * ${zoomProps})`,
+                                height: `calc(700px * ${zoomProps})`
+                            } :
+                            {
+                                width: '986px',
+                                height: '700px',
+                                transform: `scale(${zoomProps})`
+                            }
+                        }
                         onMouseOver={() => hoverCanvas = true}
                         onMouseOut={() => hoverCanvas = false}
                     >
@@ -53,12 +63,28 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                                             className={styles.tableCell}
                                             style={(
                                                 selected > 0 && selected === pX.id ?
-                                                    { backgroundImage: `linear-gradient(rgba(13, 169, 236, 0.5), rgba(13, 169, 236, 0.5)), linear-gradient(${pX.color.color}, ${pX.color.color})` } :
-                                                    { backgroundColor: pX.color.color, backgroundImage: 'none' }
+                                                    {
+                                                        backgroundImage: `linear-gradient(rgba(13, 169, 236, 0.5), rgba(13, 169, 236, 0.5)), linear-gradient(${pX.color.color}, ${pX.color.color})`,
+                                                        boxShadow: '2px 0 0 0 #88f876, 0 2px 0 0 #88f876, 2px 2px 0 0 #88f876, 2px 0 0 0 #88f876 inset, 0 2px 0 0 #88f876 inset'
+                                                    } :
+                                                    {
+                                                        backgroundColor: pX.color.color,
+                                                        backgroundImage: 'none',
+                                                        boxShadow: '2px 0 0 0 #88f876, 0 2px 0 0 #88f876, 2px 2px 0 0 #88f876, 2px 0 0 0 #88f876 inset, 0 2px 0 0 #88f876 inset'
+                                                    }
                                             )}
                                             onClick={() => canvasService.selectedHandler(pX, setSelected, selectedRef, setToolbarInfos)}
                                         >
-                                            <div className={styles.canvasPixel} style={{}}>
+                                            <div className={styles.canvasPixel} style={zoomProps >= 1 ?
+                                                {
+                                                    width: `calc(20px ${zoomProps})`,
+                                                    height: `calc(20px ${zoomProps})`
+                                                } :
+                                                {
+                                                    width: '20px',
+                                                    height: '20px'
+                                                }
+                                            }>
                                             </div>
                                         </div>
                                     )}
