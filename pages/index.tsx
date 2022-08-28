@@ -24,7 +24,6 @@ const Home: NextPage<Props> = ({ toolbar }) => {
   const buttonDisabled = useRef<HTMLButtonElement | null>(null);
   const selected = useRef(0);
   const [toolbarInfos, setToolbarInfos] = useState({ username: '', color: '' });
-  const zoomProps = useRef<HTMLDivElement | null>(null);
   const socket = useRef<Socket<DefaultEventsMap, DefaultEventsMap>>();
 
   useEffect(() => {
@@ -70,7 +69,6 @@ const Home: NextPage<Props> = ({ toolbar }) => {
             toolbar={toolbar}
             toolbarInfos={toolbarInfos}
             setToolbarInfos={setToolbarInfos}
-            zoomProps={zoomProps}
           />
           <ColorRegister
             drawPixel={drawPixel}

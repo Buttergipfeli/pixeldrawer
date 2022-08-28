@@ -12,18 +12,23 @@ type Props = {
     toolbar: string;
     toolbarInfos: { username: string; color: string; };
     setToolbarInfos: Dispatch<SetStateAction<{ username: string; color: string; }>>;
-    zoomProps: MutableRefObject<HTMLDivElement | null>;
 }
 
-const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos, zoomProps }) => {
+const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, setToolbarInfos }) => {
 
     const [selected, setSelected] = useState(0);
+    const [zoomProps, setZoomProps] = useState(1.0);
+    const hoverCanvas = useRef(false);
 
     const convertedPixels = canvasService.convertPixels(pixels);
     const y: number[] = Array.from(Array(34).keys());
-    let hoverCanvas = false;
 
     // transform: scale(0.5);
+
+    const selectedHandler = () => {
+        selectedRef.current = 0;
+        setSelected(0);
+    }
 
     return (
         <div className={styles.canvasBoard}>
@@ -31,18 +36,28 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                 {toolbar !== '' &&
                     <>
                         <Toolbar toolbarInfos={toolbarInfos} selected={selected} />
-                        <Zoomer zoomProps={zoomProps} />
+                        <Zoomer zoomProps={zoomProps} setZoomProps={setZoomProps} />
                     </>
                 }
                 <div
                     className={styles.canvasLayout}
-                    onClick={() => (!hoverCanvas ? () => { selectedRef.current = 0; setSelected(0); } : {})}
+                    onClick={() => (!hoverCanvas.current ? selectedHandler() : {})}
                 >
                     <div
                         className={styles.canvasPixels}
-                        ref={zoomProps}
-                        onMouseOver={() => hoverCanvas = true}
-                        onMouseOut={() => hoverCanvas = false}
+                        style={zoomProps >= 1 ?
+                            {
+                                width: `${986 * zoomProps}px`,
+                                height: `${700 * zoomProps}px`
+                            } :
+                            {
+                                width: '986px',
+                                height: '700px',
+                                transform: `scale(${zoomProps})`
+                            }
+                        }
+                        onMouseOver={() => hoverCanvas.current = true}
+                        onMouseOut={() => hoverCanvas.current = false}
                     >
                         {!convertedPixels.loading &&
                             y.map((index) =>
@@ -53,12 +68,28 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
                                             className={styles.tableCell}
                                             style={(
                                                 selected > 0 && selected === pX.id ?
-                                                    { backgroundImage: `linear-gradient(rgba(13, 169, 236, 0.5), rgba(13, 169, 236, 0.5)), linear-gradient(${pX.color.color}, ${pX.color.color})` } :
-                                                    { backgroundColor: pX.color.color, backgroundImage: 'none' }
+                                                    {
+                                                        backgroundImage: `linear-gradient(rgba(13, 169, 236, 0.5), rgba(13, 169, 236, 0.5)), linear-gradient(${pX.color.color}, ${pX.color.color})`,
+                                                        boxShadow: '2px 0 0 0 #88f876, 0 2px 0 0 #88f876, 2px 2px 0 0 #88f876, 2px 0 0 0 #88f876 inset, 0 2px 0 0 #88f876 inset'
+                                                    } :
+                                                    {
+                                                        backgroundColor: pX.color.color,
+                                                        backgroundImage: 'none',
+                                                        boxShadow: '2px 0 0 0 #88f876, 0 2px 0 0 #88f876, 2px 2px 0 0 #88f876, 2px 0 0 0 #88f876 inset, 0 2px 0 0 #88f876 inset'
+                                                    }
                                             )}
                                             onClick={() => canvasService.selectedHandler(pX, setSelected, selectedRef, setToolbarInfos)}
                                         >
-                                            <div className={styles.canvasPixel} style={{}}>
+                                            <div className={styles.canvasPixel} style={zoomProps >= 1 ?
+                                                {
+                                                    width: `${20 * zoomProps}px`,
+                                                    height: `${20 * zoomProps}px`
+                                                } :
+                                                {
+                                                    width: '20px',
+                                                    height: '20px'
+                                                }
+                                            }>
                                             </div>
                                         </div>
                                     )}
