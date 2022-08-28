@@ -1,19 +1,32 @@
 import { color, pixel, PrismaClient, username } from "@prisma/client";
 import nodeHtmlToImage from "node-html-to-image";
+import puppeteer from "puppeteer";
 const prismaClientInstance: PrismaClient = require("../constants/prisma/prisma");
 import { canvasInHtml } from "./canvashtml.service";
 
-export async function createCanvasImage(
+export async function createCanvasImagePuppeteer(
     pixels: (pixel & {
         color: color;
         username: username;
     })[]
 ) {
-    return await nodeHtmlToImage({
-        type: "jpeg",
-        quality: 100,
-        html: canvasInHtml(pixels)
+    const browser = await puppeteer.launch({
+        defaultViewport: { width: 1030, height: 743 },
+        'args': [
+            '--no-sandbox',
+            '--disable-setuid-sandbox'
+        ]
     });
+    const page = await browser.newPage();
+
+    await page.setContent(canvasInHtml(pixels));
+
+    const imageBuffer = await page.screenshot({ omitBackground: true });
+
+    await page.close();
+    await browser.close();
+
+    return imageBuffer;
 }
 
 export async function createCanvasImageBackup(

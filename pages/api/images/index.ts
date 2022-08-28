@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createCanvasImage, getAllImages } from "../../../beservice/image.service";
+import { createCanvasImagePuppeteer, getAllImages } from "../../../beservice/image.service";
 import { getAllPixels } from "../../../beservice/pixels.service";
 import { GetImageApi } from "../../../models/types/images";
 
@@ -20,7 +20,7 @@ export default async function handler(
         try {
             const pixels = await getAllPixels();
 
-            const imageHtml = await createCanvasImage(pixels);
+            const imageHtml = await createCanvasImagePuppeteer(pixels);
             return res.status(200).json({ image: imageHtml.toString('base64'), message: 'Image created' });
         } catch {
             return res.status(500).json({ message: 'Unexpected error happened while downloading image' });

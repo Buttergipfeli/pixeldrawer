@@ -47,7 +47,7 @@ function downLoadImage(image: string, fileName: string) {
     fakeLink.setAttribute('style', 'display: none;');
     fakeLink.download = fileName;
 
-    fakeLink.href = 'data:image/jpeg;base64,' + image;
+    fakeLink.href = 'data:image/png;base64,' + image;
 
     document.body.appendChild(fakeLink);
     fakeLink.click();
