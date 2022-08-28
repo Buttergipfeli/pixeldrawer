@@ -31,7 +31,7 @@ export default async function handler(
                     return res.status(404).json({ message: 'Image couldn\'t be found!' });
                 }
 
-                const gettedImageByIIdPath = './public/images/canvasbackups/' + gettedImageByIId.image_name + '/' + gettedImageByIId.image_name + '.jpeg';
+                const gettedImageByIIdPath = './public/images/canvasbackups/' + gettedImageByIId.image_name + '/' + gettedImageByIId.image_name + '.png';
                 if (!fs.existsSync(gettedImageByIIdPath)) {
                     return res.status(404).json({ message: 'Couldn\'t find the image you\'re searching for!' });
                 }
