@@ -1,5 +1,5 @@
 import { NextApiRequest, NextApiResponse } from "next";
-import { createCanvasImage, getImageByIId } from "../../../beservice/image.service";
+import { createCanvasImagePuppeteer, getImageByIId } from "../../../beservice/image.service";
 import { getAllPixels } from "../../../beservice/pixels.service";
 import { onlyNumber } from "../../../constants/regex/regex";
 import { GetImageApi } from "../../../models/types/images";
@@ -21,7 +21,7 @@ export default async function handler(
         try {
             if (numberIId === 0) {
                 const pixels = await getAllPixels();
-                const imageHtml = await createCanvasImage(pixels);
+                const imageHtml = await createCanvasImagePuppeteer(pixels);
 
                 return res.status(200).json({ image: imageHtml.toString('base64'), message: 'Image created' });
             } else {
