@@ -1,5 +1,5 @@
-const nodeHtmlToImage = require("node-html-to-image");
 const canvasHtmlService = require('./canvashtml.service');
+const puppeteer = require('puppeteer');
 const prismaClientInstance = require('../../constants/prisma/prisma');
 const fs = require('fs');
 
@@ -54,12 +54,23 @@ async function createCanvasImageBackup(pixels) {
                 });
             }
 
-            await nodeHtmlToImage({
-                type: "jpeg",
-                quality: 100,
-                output: todayDir.dir + '/' + todayDir.todayString + '.jpeg',
-                html: canvasHtmlService.canvasInHtml(pixels)
+            const browser = await puppeteer.launch({
+                defaultViewport: { width: 1030, height: 743 },
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox'
+                ]
             });
+            const page = await browser.newPage();
+
+            await page.setContent(canvasHtmlService.canvasInHtml(pixels));
+
+            const imageBuffer = await page.screenshot({ omitBackground: true });
+
+            await page.close();
+            await browser.close();
+
+            fs.writeFileSync(todayDir.dir + '/' + todayDir.todayString + '.png', imageBuffer.toString('base64'), 'base64');
         });
     } catch (e) {
         console.log(e);
