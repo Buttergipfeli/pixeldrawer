@@ -28,6 +28,7 @@ const Canvas: NextPage<Props> = ({ pixels, selectedRef, toolbar, toolbarInfos, s
     const selectedHandler = () => {
         selectedRef.current = 0;
         setSelected(0);
+        setToolbarInfos({ username: '', color: '' });
     }
 
     return (
